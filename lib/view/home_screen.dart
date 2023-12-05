@@ -39,24 +39,48 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          FutureBuilder(
-              future: UserViewModel().fetchUserDetails(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: SpinKitFadingCircle(
-                      color: Colors.blue,
-                    ),
-                  );
-                }
-                return ListView.builder(itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Text(snapshot.data!.data!.length.toString()),
-                    ],
-                  );
-                });
-              })
+          SizedBox(
+            height: height,
+            width: width,
+            child: FutureBuilder(
+                future: UserViewModel().fetchUserDetails(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: SpinKitFadingCircle(
+                        color: Colors.blue,
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                      itemCount: snapshot.data!.data!.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: CircleAvatar(
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(20)),
+                              child: Image(
+                                image: NetworkImage(
+                                  snapshot.data!.data![index].avatar.toString(),
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            // child: Text(
+                            //   snapshot.data!.data![index].id.toString(),
+                            // ),
+                          ),
+                          title: Text(
+                            snapshot.data!.data![index].firstName.toString() +
+                                " " +
+                                " " +
+                                snapshot.data!.data![index].lastName.toString(),
+                          ),
+                        );
+                      });
+                }),
+          )
         ],
       ),
     );
