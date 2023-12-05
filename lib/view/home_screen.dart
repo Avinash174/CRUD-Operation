@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(
               Icons.refresh_rounded,
               color: Colors.white,
-              size: 30,
+              size: 20,
             ),
           ),
           SizedBox(
