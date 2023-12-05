@@ -1,4 +1,4 @@
-import 'package:crud_operation/screen/home_screen.dart';
+import 'package:crud_operation/view/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
