@@ -1,4 +1,7 @@
+import 'package:crud_operation/model/user_model.dart';
+import 'package:crud_operation/view_model/user_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,6 +9,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserModel userModel = UserModel();
     final height = MediaQuery.sizeOf(context).height * 1;
     final width = MediaQuery.sizeOf(context).width * 1;
     return Scaffold(
@@ -14,6 +18,7 @@ class HomeScreen extends StatelessWidget {
           'Home Screen',
           style: GoogleFonts.poppins(
             color: Colors.white,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -24,7 +29,7 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(
               Icons.refresh_rounded,
               color: Colors.white,
-              size: 20,
+              size: 25,
             ),
           ),
           SizedBox(
@@ -32,8 +37,27 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        children: [],
+      body: ListView(
+        children: [
+          FutureBuilder(
+              future: UserViewModel().fetchUserDetails(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: SpinKitFadingCircle(
+                      color: Colors.blue,
+                    ),
+                  );
+                }
+                return ListView.builder(itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Text(snapshot.data!.data!.length.toString()),
+                    ],
+                  );
+                });
+              })
+        ],
       ),
     );
   }
