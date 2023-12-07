@@ -1,3 +1,4 @@
+import 'package:crud_operation/dbHealper.dart';
 import 'package:crud_operation/model/user_model.dart';
 import 'package:crud_operation/view_model/user_view_model.dart';
 import 'package:flutter/material.dart';
@@ -55,13 +56,16 @@ class HomeScreen extends StatelessWidget {
                       );
                     }
                     return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(right: 20),
                         itemCount: snapshot.data!.data!.length,
                         itemBuilder: (context, index) {
-                          return TabBar(tabs: [
-                            Text(
+                          return Container(
+                            child: Text(
                               snapshot.data!.data![index].firstName.toString(),
-                            )
-                          ]);
+                            ),
+                          );
                           // return ListTile(
                           //   leading: CircleAvatar(
                           //     child: ClipRRect(
@@ -89,5 +93,10 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> saveDataToLocalDatabase(Map<String, dynamic> data) async {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    await dbHelper.saveData(data);
   }
 }
